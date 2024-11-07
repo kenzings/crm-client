@@ -1,0 +1,24 @@
+{
+  "name": "nuxt-getting-started",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "npx nuxi build --preset=aws_lambda",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "dependencies": {
+    "@apollo/client": "^3.5.10",
+    "@nuxt/image": "^1.8.1",
+    "@vue/apollo-composable": "^4.2.1",
+    "graphql": "^15.5.0",
+    "graphql-tag": "^2.12.6",
+    "nuxt": "^3.13.0",
+    "vue": "latest"
+  },
+  "devDependencies": {
+    "@nuxtjs/apollo": "^5.0.0-alpha.14"
+  }
+}
