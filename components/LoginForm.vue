@@ -61,61 +61,24 @@
           </button>
         </div>
       </form>
+      <AuthLink
+          title="Nếu chưa có tài khoản?"
+          route="/register"
+          linkText="Đăng ký ngay"
+      />
     </div>
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue';
-import { useMutation } from '@vue/apollo-composable';
-import gql from 'graphql-tag';
-import { useRouter } from 'vue-router';
+import { useAuthUser } from '@/composables/useAuthUser';
 
-const LOGIN_MUTATION = gql`
-  mutation Login($email: String!, $password: String!) {
-    login(input: { email: $email, password: $password }) {
-      tokenType
-      expiresIn
-      accessToken
-      refreshToken
-    }
-  }
-`;
+const email = ref('')
+const password = ref('')
+const { login, loading, error } = useAuthUser()
 
-const email = ref('');
-const password = ref('');
-const error = ref(null);
-const loading = ref(false);
-const router = useRouter();
-
-const { mutate: executeLogin } = useMutation(
-    LOGIN_MUTATION,
-    () => ({
-      variables: {
-        email: email.value,
-        password: password.value
-      }
-    })
-);
-
-async function handleLogin() {
-  try {
-    loading.value = true;
-    error.value = null;
-
-    const {data} = await executeLogin();
-
-    if (data?.login?.accessToken) {
-      localStorage.setItem('apollo-token', data.login.accessToken);
-      router.push('/');
-    } else {
-      throw new Error('Token không hợp lệ');
-    }
-  } catch (err) {
-    console.error(err);
-    error.value = err.message || 'Đã có lỗi xảy ra';
-  } finally {
-    loading.value = false;
-  }
+function handleLogin() {
+  login(email.value, password.value)
 }
 </script>

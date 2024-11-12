@@ -2,7 +2,8 @@
 import type { DefineComponent, SlotsType } from 'vue'
 type IslandComponent<T extends DefineComponent> = T & DefineComponent<{}, {refresh: () => Promise<void>}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, SlotsType<{ fallback: { error: unknown } }>>
 interface _GlobalComponents {
-      'LoginForm': typeof import("../components/LoginForm.vue")['default']
+      'AuthLink': typeof import("../components/AuthLink.vue")['default']
+    'LoginForm': typeof import("../components/LoginForm.vue")['default']
     'RegisterForm': typeof import("../components/RegisterForm.vue")['default']
     'NuxtWelcome': typeof import("../node_modules/nuxt/dist/app/components/welcome.vue")['default']
     'NuxtLayout': typeof import("../node_modules/nuxt/dist/app/components/nuxt-layout")['default']
@@ -27,7 +28,8 @@ interface _GlobalComponents {
     'Body': typeof import("../node_modules/nuxt/dist/head/runtime/components")['Body']
     'NuxtIsland': typeof import("../node_modules/nuxt/dist/app/components/nuxt-island")['default']
     'NuxtRouteAnnouncer': IslandComponent<typeof import("../node_modules/nuxt/dist/app/components/server-placeholder")['default']>
-      'LazyLoginForm': typeof import("../components/LoginForm.vue")['default']
+      'LazyAuthLink': typeof import("../components/AuthLink.vue")['default']
+    'LazyLoginForm': typeof import("../components/LoginForm.vue")['default']
     'LazyRegisterForm': typeof import("../components/RegisterForm.vue")['default']
     'LazyNuxtWelcome': typeof import("../node_modules/nuxt/dist/app/components/welcome.vue")['default']
     'LazyNuxtLayout': typeof import("../node_modules/nuxt/dist/app/components/nuxt-layout")['default']
@@ -58,6 +60,7 @@ declare module 'vue' {
   export interface GlobalComponents extends _GlobalComponents { }
 }
 
+export const AuthLink: typeof import("../components/AuthLink.vue")['default']
 export const LoginForm: typeof import("../components/LoginForm.vue")['default']
 export const RegisterForm: typeof import("../components/RegisterForm.vue")['default']
 export const NuxtWelcome: typeof import("../node_modules/nuxt/dist/app/components/welcome.vue")['default']
@@ -83,6 +86,7 @@ export const Html: typeof import("../node_modules/nuxt/dist/head/runtime/compone
 export const Body: typeof import("../node_modules/nuxt/dist/head/runtime/components")['Body']
 export const NuxtIsland: typeof import("../node_modules/nuxt/dist/app/components/nuxt-island")['default']
 export const NuxtRouteAnnouncer: IslandComponent<typeof import("../node_modules/nuxt/dist/app/components/server-placeholder")['default']>
+export const LazyAuthLink: typeof import("../components/AuthLink.vue")['default']
 export const LazyLoginForm: typeof import("../components/LoginForm.vue")['default']
 export const LazyRegisterForm: typeof import("../components/RegisterForm.vue")['default']
 export const LazyNuxtWelcome: typeof import("../node_modules/nuxt/dist/app/components/welcome.vue")['default']

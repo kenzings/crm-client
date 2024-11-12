@@ -16,12 +16,13 @@ export default defineNuxtConfig({
   plugins: ['~/plugins/apollo.js'],
   modules: ['@nuxtjs/apollo', '@nuxt/image'],
   apollo: {
+    authHeader: 'Authorization',
+    authType: 'Bearer',
     clients: {
       default: {
         httpEndpoint: 'http://shino-dev.local/graphql',
-        authHeader: 'Bearer'
+        tokenStorage: 'localStorage',
       },
-
     }
   }
 });

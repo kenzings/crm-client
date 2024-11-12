@@ -1,44 +1,66 @@
 <template>
-  <div>
-    <h1>Register</h1>
-    <form @submit.prevent="handleRegister">
-      <input v-model="email" type="email" placeholder="Email" required />
-      <input v-model="password" type="password" placeholder="Password" required />
-      <button type="submit">Register</button>
-    </form>
-    <p v-if="error">{{ error }}</p>
+  <div class="flex items-center justify-center h-screen">
+    <div class="w-full max-w-md px-6 py-8 bg-white shadow-md rounded-lg">
+      <h1 class="text-2xl font-bold mb-6">Register</h1>
+      <form @submit.prevent="handleRegister" class="space-y-4">
+        <input
+            v-model="name"
+            type="text"
+            placeholder="Full Name"
+            class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
+        />
+        <input
+            v-model="email"
+            type="email"
+            placeholder="Email"
+            class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
+        />
+        <input
+            v-model="phone"
+            type="tel"
+            placeholder="Phone"
+            class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
+        />
+        <input
+            v-model="password"
+            type="password"
+            placeholder="Password"
+            class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
+        />
+        <button
+            type="submit"
+            class="w-full px-4 py-2 font-medium text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+          Register
+        </button>
+      </form>
+      <p v-if="error" class="mt-4 text-red-500">{{ error }}</p>
+      <AuthLink
+          title="Đã có tài khoản?"
+          route="/login"
+          linkText="Đăng nhập ngay"
+      />
+    </div>
+
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import { useMutation } from '@vue/apollo-composable';
-import gql from 'graphql-tag';
+import {ref} from 'vue';
+import { useAuthUser } from '@/composables/useAuthUser';
 
-const REGISTER_MUTATION = gql`
-  mutation Register($email: String!, $password: String!) {
-    register(email: $email, password: $password) {
-      token
-    }
-  }
-`;
-
+const { register, loading, error } = useAuthUser()
+const name = ref('');
 const email = ref('');
+const phone = ref('');
 const password = ref('');
-const error = ref(null);
 
-const { mutate: register } = useMutation(REGISTER_MUTATION, {
-  variables: { email, password },
-  onError(err) {
-    error.value = err.message;
-  },
-  onCompleted(data) {
-    localStorage.setItem('token', data.register.token);
-    // Redirect to home page or wherever
-  }
-});
 
-function handleRegister() {
-  register();
+async function handleRegister() {
+  register(name.value, email.value, password.value, phone.value)
 }
 </script>
