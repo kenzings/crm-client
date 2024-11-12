@@ -345,7 +345,10 @@ const _inlineRuntimeConfig = {
       }
     }
   },
-  "public": {},
+  "public": {
+    "apiUrl": "http://shino-dev.local/graphql"
+  },
+  "apiUrl": "http://shino-dev.local/graphql",
   "ipx": {
     "baseURL": "/_ipx",
     "alias": {},
