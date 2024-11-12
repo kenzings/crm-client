@@ -6,8 +6,9 @@ import { setContext } from '@apollo/client/link/context'
 
 export default defineNuxtPlugin(() => {
   // Tạo link HTTP tới GraphQL endpoint
+  const apiUrl = useRuntimeConfig().public.apiUrl;
   const httpLink = createHttpLink({
-    uri: 'http://shino-dev.local/graphql',
+    uri: apiUrl,
   })
 
   // Thêm token vào mỗi yêu cầu

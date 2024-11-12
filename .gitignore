@@ -1,0 +1,12 @@
+/node_modules
+.env
+.env.backup
+/.idea
+/.vscode
+.idea
+.output
+.data
+.nuxt
+.nitro
+.cache
+dist

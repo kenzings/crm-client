@@ -3,6 +3,12 @@
 export default defineNuxtConfig({
   compatibilityDate: '2024-04-03',
   devtools: { enabled: true },
+  runtimeConfig: {
+    apiUrl: process.env.APP_URL_API,
+    public: {
+      apiUrl: process.env.APP_URL_API
+    }
+  },
   css: ['~/assets/css/main.css'],
   postcss: {
     plugins: {
@@ -20,9 +26,10 @@ export default defineNuxtConfig({
     authType: 'Bearer',
     clients: {
       default: {
-        httpEndpoint: 'http://shino-dev.local/graphql',
+        httpEndpoint: process.env.APP_URL_API || 'http://shino-dev.local/graphql',
         tokenStorage: 'localStorage',
       },
     }
-  }
+  },
+
 });
