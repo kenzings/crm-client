@@ -1,8 +1,0 @@
-name: nuxt-getting-started
-region: us-east-1
-yamlVersion: 2
-nuxt:
-  path: .
-  packageManager: npm
-  scripts:
-    deploy: npm install
