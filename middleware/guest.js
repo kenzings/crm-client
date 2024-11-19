@@ -1,8 +1,7 @@
+import { useCookie } from '#app'
 export default defineNuxtRouteMiddleware((to, from) => {
-    if (process.client) {
-        const token = localStorage.getItem('apollo-token');
+        const token = useCookie('apollo:crm.token').value;
         if (token) {
             return navigateTo('/');
         }
-    }
 });

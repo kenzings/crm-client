@@ -2,7 +2,7 @@ import { useMutation } from '@vue/apollo-composable'
 import gql from 'graphql-tag'
 import { useRouter } from 'vue-router'
 import { ref } from 'vue'
-
+import { useCookie } from '#app'
 // GraphQL Mutations
 const LOGIN_MUTATION = gql`
     mutation login($input: LoginInput!) {
@@ -36,6 +36,7 @@ export function useAuthUser() {
     const router = useRouter()
     const loading = ref(false)
     const error = ref(null)
+    const tokenCookie = useCookie('apollo:crm.token')
 
     // Login function
     async function login(email, password) {
@@ -49,8 +50,8 @@ export function useAuthUser() {
                 }
             });
             if (result?.data?.login?.accessToken) {
-                localStorage.setItem('apollo-token', result.data.login.accessToken)
-                router.push('/')
+                tokenCookie.value = result.data.login.accessToken
+                await router.push('/')
             }
         } catch (err) {
             error.value = err.message
@@ -74,7 +75,7 @@ export function useAuthUser() {
                 }
             })
             if (data?.userCreate) {
-                router.push('/login')
+                await router.push('/login')
             }
         } catch (err) {
             error.value = err.message
@@ -88,10 +89,9 @@ export function useAuthUser() {
         loading.value = true
         try {
             const { data } = await logoutMutation()
-
             if (data?.logout) {
-                localStorage.removeItem('apollo-token')
-                router.push('/login')
+                tokenCookie.value = null
+                await router.push('/login')
             }
         } catch (err) {
             error.value = err.message

@@ -22,12 +22,21 @@ export default defineNuxtConfig({
   plugins: ['~/plugins/apollo.js'],
   modules: ['@nuxtjs/apollo', '@nuxt/image'],
   apollo: {
+    autoImports: true,
     authHeader: 'Authorization',
     authType: 'Bearer',
+    tokenStorage: 'cookie',
+    proxyCookies: true,
     clients: {
       default: {
-        httpEndpoint: process.env.APP_URL_API || 'http://shino-dev.local/graphql',
-        tokenStorage: 'localStorage',
+        httpEndpoint: 'http://shino-dev.local/graphql',
+        httpLinkOptions: {
+          credentials: 'include'
+        },
+        tokenName: 'apollo:crm.token',
+        tokenStorage: 'cookie',
+        authType: 'Bearer',
+        authHeader: 'Authorization'
       },
     }
   },
