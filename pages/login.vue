@@ -4,7 +4,8 @@
 
 <script setup>
 definePageMeta({
-  middleware: 'guest'
+  middleware: 'guest',
+  layout: 'guest',
 });
 
 </script>

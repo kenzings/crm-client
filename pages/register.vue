@@ -2,4 +2,10 @@
   <RegisterForm />
 </template>
 
-<script setup></script>
+<script setup>
+definePageMeta({
+  middleware: 'guest',
+  layout: 'guest',
+});
+
+</script>
