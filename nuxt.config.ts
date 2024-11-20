@@ -3,24 +3,24 @@
 export default defineNuxtConfig({
   compatibilityDate: '2024-04-03',
   devtools: { enabled: true },
+  plugins: ['~/plugins/apollo.js'],
+  modules: ['@nuxtjs/apollo', '@nuxt/image'],
+  css: ['~/assets/css/main.css'],
+  build: {
+    transpile: ['@apollo/client', 'ts-invariant/process', '@heroicons/vue'],
+  },
   runtimeConfig: {
     apiUrl: process.env.APP_URL_API,
     public: {
       apiUrl: process.env.APP_URL_API
     }
   },
-  css: ['~/assets/css/main.css'],
   postcss: {
     plugins: {
       tailwindcss: {},
       autoprefixer: {},
     },
   },
-  build: {
-    transpile: ['@apollo/client', 'ts-invariant/process', '@heroicons/vue'],
-  },
-  plugins: ['~/plugins/apollo.js'],
-  modules: ['@nuxtjs/apollo', '@nuxt/image'],
   apollo: {
     autoImports: true,
     authHeader: 'Authorization',
@@ -38,6 +38,17 @@ export default defineNuxtConfig({
         authType: 'Bearer',
         authHeader: 'Authorization'
       },
+    }
+  },
+  app: {
+    head: {
+      charset: 'utf8',
+      title: 'CRM',
+      viewport: 'width=device-width, initial-scale=1',
+      meta: [
+        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+        { hid: 'description', name: 'description', content: '' },
+      ],
     }
   },
 

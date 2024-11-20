@@ -53,22 +53,10 @@
 </template>
 
 <script setup>
-import { useQuery } from '@vue/apollo-composable'
+import {useGetUserData} from '@/composables/useQueryGraphql'
+const route = useRoute();
 
-const ME_QUERY = gql`
-  query GetCurrentUser {
-    me {
-      id
-      name
-      email
-      email_verified_at
-      created_at
-      updated_at
-    }
-  }
-`
-
-const { result: data, loading, error } = useQuery(ME_QUERY)
+const { data, loading, error } = useGetUserData()
 
 const formatDate = (dateString) => {
   if (!dateString) return ''
@@ -79,7 +67,19 @@ const formatDate = (dateString) => {
   })
 }
 
+useSeoMeta({
+  title: `${route.meta.title}`,
+  ogTitle: 'Profile',
+  description: 'This is profile.',
+  ogDescription: 'This is profile.',
+  ogImage: 'https://example.com/image.png',
+  twitterCard: 'summary_large_image',
+})
 definePageMeta({
+  key: route => route.fullPath,
+  title: 'Profile',
+  description: 'User profile page.',
+  keywords: ['profile', 'user', 'details'],
   middleware: 'auth',
   layout: 'default'
 });

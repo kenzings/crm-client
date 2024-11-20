@@ -1,9 +1,7 @@
 <template>
   <div>
-    <UDashboardLayout>
-        <Sidebar/>
-        <slot/>
-    </UDashboardLayout>
+    <Sidebar />
+    <slot />
   </div>
 </template>
 
@@ -11,6 +9,4 @@
 
 </script>
 
-<style>
-
-</style>
+<style></style>

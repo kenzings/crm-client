@@ -104,9 +104,4 @@ const navigation = ref([
   { name: 'Projects', href: '/projects', current: false },
   { name: 'Calendar', href: '/calendar', current: false },
 ])
-
-// Apply the auth middleware to this page
-definePageMeta({
-  middleware: 'auth',
-});
 </script>
