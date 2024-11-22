@@ -39,13 +39,6 @@
               </span>
             </dd>
           </div>
-
-          <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-            <dt class="text-sm font-medium text-gray-500">Member since</dt>
-            <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-              {{ formatDate(data.me.created_at) }}
-            </dd>
-          </div>
         </dl>
       </div>
     </div>
@@ -54,6 +47,7 @@
 
 <script setup>
 import {useGetUserData} from '@/composables/useQueryGraphql'
+import profileFav from '@/assets/images/profile-fav.png';
 const route = useRoute();
 
 const { data, loading, error } = useGetUserData()
@@ -66,13 +60,22 @@ const formatDate = (dateString) => {
     day: 'numeric',
   })
 }
-
+const segments = route.fullPath.split('/').filter(Boolean);
+const title = ref(segments)
+useHead({
+  link: [
+    { rel: 'icon', type: 'image/png', href: profileFav }, // Cập nhật favicon
+  ]
+});
 useSeoMeta({
-  title: `${route.meta.title}`,
-  ogTitle: 'Profile',
+  title: title.value,
+  ogTitle: title.value,
   description: 'This is profile.',
   ogDescription: 'This is profile.',
-  ogImage: 'https://example.com/image.png',
+  ogImage: {
+    width: 1200,
+    url: profileFav
+  },
   twitterCard: 'summary_large_image',
 })
 definePageMeta({
@@ -80,7 +83,10 @@ definePageMeta({
   title: 'Profile',
   description: 'User profile page.',
   keywords: ['profile', 'user', 'details'],
+  pageTransition: { name: 'fade', mode: 'out-in' },
   middleware: 'auth',
-  layout: 'default'
+  keepalive: true,
+  layout: 'default',
+  scrollToTop: true
 });
 </script>

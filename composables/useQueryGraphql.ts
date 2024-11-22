@@ -8,8 +8,7 @@ const ME_QUERY = gql`
       name
       email
       email_verified_at
-      created_at
-      updated_at
+      __typename
     }
   }
 `
@@ -17,7 +16,7 @@ const ME_QUERY = gql`
 // Custom hook for fetching user data
 export const useGetUserData = () => {
   const { result: data, loading, error } = useQuery(ME_QUERY)
-  
+
   return {
     data,
     loading,
