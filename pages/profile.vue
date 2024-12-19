@@ -1,16 +1,22 @@
 <!-- ~/pages/profile.vue -->
 <template>
   <div class="max-w-4xl mx-auto p-6">
-    <div v-if="loading" class="flex justify-center items-center min-h-[200px]">
-      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
+    <div v-if="userLoading" class="flex justify-center items-center min-h-[200px]">
+      <svg class="animate-spin h-5 w-5 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none"
+        viewBox="0 0 24 24">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor"
+          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+        </path>
+      </svg>
     </div>
 
-    <div v-else-if="error" class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4" role="alert">
+    <div v-else-if="userError" class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4" role="alert">
       <p class="font-bold">Error</p>
-      <p>{{ error.message }}</p>
+      <p>{{ userError.message }}</p>
     </div>
 
-    <div v-else-if="data" class="bg-white shadow rounded-lg">
+    <div v-else-if="userData" class="bg-white shadow rounded-lg">
       <div class="px-4 py-5 sm:px-6">
         <h3 class="text-lg leading-6 font-medium text-gray-900">User Profile</h3>
         <p class="mt-1 max-w-2xl text-sm text-gray-500">Personal details and information</p>
@@ -20,22 +26,33 @@
         <dl>
           <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
             <dt class="text-sm font-medium text-gray-500">Full name</dt>
-            <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">{{ data.me.name }}</dd>
+            <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">{{ userData.me.name }}</dd>
           </div>
 
           <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
             <dt class="text-sm font-medium text-gray-500">Email address</dt>
-            <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">{{ data.me.email }}</dd>
+            <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">{{ userData.me.email }}</dd>
           </div>
 
           <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
             <dt class="text-sm font-medium text-gray-500">Email verified</dt>
             <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-              <span v-if="data.me.email_verified_at" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                Verified on {{ formatDate(data.me.email_verified_at) }}
+              <span v-if="userData.me.email_verified_at"
+                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                Verified on {{ formatDate(userData.me.email_verified_at) }}
               </span>
-              <span v-else class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+              <span v-else
+                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
                 Not verified
+              </span>
+            </dd>
+          </div>
+          <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt class="text-sm font-medium text-gray-500">Role</dt>
+            <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+              <span :class="roleClass(userData.me.role.name)"
+                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium">
+                {{ userData.me.role.name }}
               </span>
             </dd>
           </div>
@@ -46,11 +63,12 @@
 </template>
 
 <script setup>
-import {useGetUserData} from '@/composables/useQueryGraphql'
+import { useQueryGraphql } from '@/composables/useQueryGraphql'
 import profileFav from '@/assets/images/profile-fav.png';
 const route = useRoute();
 
-const { data, loading, error } = useGetUserData()
+const { fetchUserProfile } = useQueryGraphql()
+const { userData, userLoading, userError } = fetchUserProfile()
 
 const formatDate = (dateString) => {
   if (!dateString) return ''
@@ -60,6 +78,20 @@ const formatDate = (dateString) => {
     day: 'numeric',
   })
 }
+
+const roleClass = (role) => {
+  switch (role) {
+    case 'Administrator':
+      return 'bg-red-100 text-red-800'
+    case 'Customer':
+      return 'bg-blue-100 text-blue-800'
+    case 'Staff':
+      return 'bg-green-100 text-green-800'
+    default:
+      return 'bg-gray-100 text-gray-800'
+  }
+}
+
 const segments = route.fullPath.split('/').filter(Boolean);
 const title = ref(segments)
 useHead({

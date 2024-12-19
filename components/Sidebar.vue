@@ -101,7 +101,7 @@ function handleLogout() {
 const navigation = ref([
   { name: 'Dashboard', href: '/', current: true },
   { name: 'Team', href: '/team', current: false },
-  { name: 'Projects', href: '/projects', current: false },
+  { name: 'Products', href: '/products', current: false },
   { name: 'Calendar', href: '/calendar', current: false },
 ])
 </script>
