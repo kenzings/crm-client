@@ -25,20 +25,6 @@ useSeoMeta({
     width: 1200,
     url: loginFav
   },
-  // twitter: {
-  //   card: 'summary_large_image',
-  //   title: 'Login',
-  //   description: 'Login to your account',
-  //   image: '/logo.png',
-  // },
-  // jsonLd: {
-  //   '@context': 'http://schema.org',
-  //   '@type': 'WebSite',
-  //   url: 'https://example.com/login',
-  //   name: 'Login',
-  //   description: 'Login to your account',
-  //   image: '/logo.png',
-  // },
 })
 
 definePageMeta({

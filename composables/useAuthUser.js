@@ -1,6 +1,6 @@
 import { useMutation } from "@vue/apollo-composable";
 import gql from "graphql-tag";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from 'vue-router'
 import { ref } from "vue";
 import { useCookie } from "#app";
 // GraphQL Mutations
@@ -34,6 +34,7 @@ const REGISTER_MUTATION = gql`
 
 export function useAuthUser() {
   const router = useRouter();
+  const route = useRoute()
   const loading = ref(false);
   const error = ref(null);
   const tokenCookie = useCookie("apollo:crm.token");
@@ -51,7 +52,8 @@ export function useAuthUser() {
       });
       if (result?.data?.login?.accessToken) {
         tokenCookie.value = result.data.login.accessToken;
-        await router.push("/");
+        const redirect = route.query.redirect || "/";
+        router.push(redirect);
       }
     } catch (err) {
       error.value = err.message;

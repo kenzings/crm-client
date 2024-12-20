@@ -10,12 +10,12 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
-    "@apollo/client": "^3.5.10",
+    "@apollo/client": "^3.12.4",
     "@headlessui/vue": "^1.7.23",
     "@heroicons/vue": "^2.1.5",
     "@nuxt/image": "^1.8.1",
     "@vue/apollo-composable": "^4.2.1",
-    "graphql": "^15.5.0",
+    "graphql": "^15.9.0",
     "graphql-tag": "^2.12.6",
     "nuxt": "^3.13.0",
     "vue": "latest"

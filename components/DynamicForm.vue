@@ -3,27 +3,13 @@
     <div v-for="field in fields" :key="field.name" class="flex flex-col">
       <label :for="field.name" class="mb-2 text-sm font-medium text-gray-700">{{ field.label }}</label>
       <input
-        v-if="field.type === 'text'"
+        v-if="field.type === 'text' || field.type === 'email' || field.type === 'password' || field.type === 'tel'"
         :type="field.type"
         :name="field.name"
         v-model="formData[field.name]"
         :placeholder="field.placeholder"
-        class="px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-      />
-      <input
-        v-if="field.type === 'email'"
-        :type="field.type"
-        :name="field.name"
-        v-model="formData[field.name]"
-        :placeholder="field.placeholder"
-        class="px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-      />
-      <input
-        v-if="field.type === 'password'"
-        :type="field.type"
-        :name="field.name"
-        v-model="formData[field.name]"
-        :placeholder="field.placeholder"
+        :pattern="field.type === 'tel' ? '(\\+84|0)[0-9]{9}' : undefined"
+        :minlength="field.type === 'password' ? 6 : undefined"
         class="px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
       />
       <!-- Add more input types as needed -->
@@ -56,7 +42,7 @@ const props = defineProps({
   },
   buttonClasses: {
     type: String,
-    default: 'px-4 py-2 font-medium text-white bg-indigo-600 rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500',
+    default: 'w-full px-6 py-3 font-medium text-white bg-blue-600 rounded-lg shadow-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500',
   },
   loading: {
     type: Boolean,
