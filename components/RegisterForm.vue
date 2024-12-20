@@ -6,15 +6,20 @@
         buttonClasses="w-full px-6 py-3 font-medium text-white bg-blue-600 rounded-lg shadow-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
         @submit="handleSubmit" />
       <div v-if="error" class="mt-4 text-center text-red-600">{{ error }}</div>
+      <div class="flex justify-center mt-4">
+        <button @click="goBack" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700">
+          Back to Previous Page
+        </button>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
 import { useAuthUser } from '@/composables/useAuthUser'
-
+import { useRouter } from 'vue-router'
 const { register, loading, error } = useAuthUser()
-
+const router = useRouter()
 const registerFields = [
   {
     name: 'name',
@@ -45,6 +50,10 @@ const registerFields = [
 const handleSubmit = async (formData) => {
   const { name, email, phone, password } = formData
   await register(name, email, phone, password)
+}
+
+const goBack = () => {
+  router.go(-1)
 }
 </script>
 

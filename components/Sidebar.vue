@@ -40,9 +40,7 @@
                 class="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                 <span class="absolute -inset-1.5" />
                 <span class="sr-only">Open user menu</span>
-                <img class="h-8 w-8 rounded-full"
-                  src="/none-user.png"
-                  alt="" />
+                <img class="h-8 w-8 rounded-full" src="/none-user.png" alt="" />
               </MenuButton>
             </div>
             <transition enter-active-class="transition ease-out duration-100"
@@ -70,10 +68,12 @@
                 </MenuItem>
 
                 <MenuItem v-if="!token" v-slot="{ active }">
-                  <a href="/login" :class="[active ? 'bg-gray-100 outline-none' : '', 'block px-4 py-2 text-sm text-gray-700']">Login</a>
+                <a href="/login"
+                  :class="[active ? 'bg-gray-100 outline-none' : '', 'block px-4 py-2 text-sm text-gray-700']">Login</a>
                 </MenuItem>
                 <MenuItem v-if="!token" v-slot="{ active }">
-                  <a href="/register" :class="[active ? 'bg-gray-100 outline-none' : '', 'block px-4 py-2 text-sm text-gray-700']">Register</a>
+                <a href="/register"
+                  :class="[active ? 'bg-gray-100 outline-none' : '', 'block px-4 py-2 text-sm text-gray-700']">Register</a>
                 </MenuItem>
               </MenuItems>
             </transition>
@@ -98,6 +98,7 @@ import { ref } from 'vue'
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/vue/24/outline'
 import { useAuthUser } from '@/composables/useAuthUser';
+import { useRoute } from 'vue-router'
 
 const tokenCookie = useCookie('apollo:crm.token')
 const token = computed(() => tokenCookie.value)
@@ -106,12 +107,32 @@ const { logout, loading, error } = useAuthUser()
 function handleLogout() {
   logout()
 }
-
+const route = useRoute();
+const isActive = (path) => {
+  return route.path === path
+}
 // Define the navigation data
 const navigation = ref([
-  { name: 'Dashboard', href: '/', current: true },
+  { name: 'Dashboard', href: '/', current: false },
   { name: 'Team', href: '/team', current: false },
   { name: 'Products', href: '/products', current: false },
   { name: 'Calendar', href: '/calendar', current: false },
 ])
+const updateNavigationState = () => {
+  navigation.value.forEach((item) => {
+    if (item.href === '/') {
+      // Chỉ đánh dấu Dashboard là active nếu path đúng là '/'
+      item.current = route.path === '/';
+    } else {
+      // Đánh dấu các mục khác nếu route.path bắt đầu bằng href
+      item.current = route.path.startsWith(item.href);
+    }
+  });
+};
+
+// Watch for changes in route
+watch(() => route.path, updateNavigationState);
+
+// Call the function once to initialize the state
+updateNavigationState();
 </script>
