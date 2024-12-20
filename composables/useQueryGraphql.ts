@@ -5,12 +5,23 @@ const GET_USER_PROFILE = gql`
   query GetCurrentUser {
     me {
       id
+    name
+    email
+    email_verified_at
+    role {
+      id
       name
-      email
-      email_verified_at
-      role {
-        name
-      }
+    }
+    permissions {
+      id
+      name
+    }
+    userProfile {
+      avatar
+      address
+      phone
+      city
+    }
       __typename
     }
   }
