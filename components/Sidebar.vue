@@ -40,7 +40,7 @@
                 class="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                 <span class="absolute -inset-1.5" />
                 <span class="sr-only">Open user menu</span>
-                <img class="h-8 w-8 rounded-full" src="/none-user.png" alt="" />
+                <img class="h-8 w-8 rounded-full" :src="avatarUrl" alt="" />
               </MenuButton>
             </div>
             <transition enter-active-class="transition ease-out duration-100"
@@ -98,19 +98,27 @@ import { ref } from 'vue'
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/vue/24/outline'
 import { useAuthUser } from '@/composables/useAuthUser';
+import { useQueryGraphql } from '@/composables/useQueryGraphql'
 import { useRoute } from 'vue-router'
 
 const tokenCookie = useCookie('apollo:crm.token')
 const token = computed(() => tokenCookie.value)
+const { fetchUserProfile } = useQueryGraphql()
+const { userData, userLoading, userError } = fetchUserProfile()
 
 const { logout, loading, error } = useAuthUser()
 function handleLogout() {
   logout()
 }
 const route = useRoute();
-const isActive = (path) => {
-  return route.path === path
-}
+
+const avatarUrl = computed(() => {
+  if (token.value && userData.value && userData.value.me && userData.value.me.userProfile) {
+    return userData.value.me.userProfile.avatar || '/none-user.png'
+  }
+  return '/none-user.png'
+})
+
 // Define the navigation data
 const navigation = ref([
   { name: 'Dashboard', href: '/', current: false },
