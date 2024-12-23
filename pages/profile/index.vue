@@ -10,18 +10,18 @@
           </path>
         </svg>
       </div>
-  
+
       <div v-else-if="userError" class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4" role="alert">
         <p class="font-bold">Error</p>
         <p>{{ userError.message }}</p>
       </div>
-  
+
       <div v-else-if="userData" class="bg-white shadow rounded-lg">
         <div class="px-4 py-5 sm:px-6">
           <h3 class="text-lg leading-6 font-medium text-gray-900">User Profile</h3>
           <p class="mt-1 max-w-2xl text-sm text-gray-500">Personal details and information</p>
         </div>
-  
+
         <div class="border-t border-gray-200">
           <dl>
             <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -30,17 +30,17 @@
                 <img :src="avatarUrl" alt="Avatar" class="w-16 h-16 rounded-full">
               </dd>
             </div>
-  
+
             <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
               <dt class="text-sm font-medium text-gray-500">Full name</dt>
               <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">{{ userData.me.name }}</dd>
             </div>
-  
+
             <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
               <dt class="text-sm font-medium text-gray-500">Email address</dt>
               <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">{{ userData.me.email }}</dd>
             </div>
-  
+
             <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
               <dt class="text-sm font-medium text-gray-500">Email verified</dt>
               <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
@@ -54,7 +54,7 @@
                 </span>
               </dd>
             </div>
-  
+
             <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
               <dt class="text-sm font-medium text-gray-500">Role</dt>
               <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
@@ -64,17 +64,17 @@
                 </span>
               </dd>
             </div>
-  
+
             <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
               <dt class="text-sm font-medium text-gray-500">Address</dt>
               <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">{{ userData.me.userProfile.address }}</dd>
             </div>
-  
+
             <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
               <dt class="text-sm font-medium text-gray-500">Phone</dt>
               <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">{{ userData.me.userProfile.phone }}</dd>
             </div>
-  
+
             <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
               <dt class="text-sm font-medium text-gray-500">City</dt>
               <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">{{ userData.me.userProfile.city }}</dd>
@@ -89,22 +89,22 @@
       </div>
     </div>
   </template>
-  
+
   <script setup>
   import { useQueryGraphql } from '@/composables/useQueryGraphql'
   import profileFav from '@/assets/images/profile-fav.png';
   const route = useRoute();
-  
+
   const { fetchUserProfile } = useQueryGraphql()
   const { userData, userLoading, userError } = fetchUserProfile()
-  
+
   const avatarUrl = computed(() => {
     if (userData.value.me.userProfile.avatar) {
       return userData.value.me.userProfile.avatar
     }
     return '/none-user.png'
   })
-  
+
   const formatDate = (dateString) => {
     if (!dateString) return ''
     return new Date(dateString).toLocaleDateString('en-US', {
@@ -113,7 +113,7 @@
       day: 'numeric',
     })
   }
-  
+
   const roleClass = (role) => {
     switch (role) {
       case 'Administrator':
@@ -126,7 +126,7 @@
         return 'bg-gray-100 text-gray-800'
     }
   }
-  
+
   const segments = route.fullPath.split('/').filter(Boolean);
   const title = ref(segments)
   useHead({

@@ -1,32 +1,32 @@
-// ~/plugins/apollo.js
-import { defineNuxtPlugin } from '#app'
-import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client/core'
-import { setContext } from '@apollo/client/link/context'
-import { provideApolloClient } from '@vue/apollo-composable'
-import { useCookie } from '#app'
+import { defineNuxtPlugin } from "#app";
+import { ApolloClient, InMemoryCache } from "@apollo/client/core";
+import { setContext } from "@apollo/client/link/context";
+import createUploadLink from "apollo-upload-client/createUploadLink.mjs";
+import { provideApolloClient } from "@vue/apollo-composable";
+import { useCookie } from "#app";
 
 export default defineNuxtPlugin(() => {
-  const apiUrl = useRuntimeConfig().public.apiUrl
+  const apiUrl = useRuntimeConfig().public.apiUrl;
 
-  const httpLink = createHttpLink({
+  const uploadLink = createUploadLink({
     uri: `${apiUrl}/graphql`,
-  })
+  });
 
   const authLink = setContext((_, { headers }) => {
-    const tokenCookie  = useCookie('apollo:crm.token')
-    const token = tokenCookie.value
+    const tokenCookie = useCookie("apollo:crm.token");
+    const token = tokenCookie.value;
     return {
       headers: {
         ...headers,
-        Authorization: token ? `Bearer ${token}` : '',
+        Authorization: token ? `Bearer ${token}` : "",
       },
-    }
-  })
+    };
+  });
 
-  const apolloClient = new ApolloClient({
-    link: authLink.concat(httpLink),
+  const client = new ApolloClient({
+    link: authLink.concat(uploadLink),
     cache: new InMemoryCache(),
-  })
+  });
 
-  provideApolloClient(apolloClient)
-})
+  provideApolloClient(client);
+});
