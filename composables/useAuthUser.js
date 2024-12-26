@@ -1,36 +1,8 @@
 import { useMutation } from "@vue/apollo-composable";
-import gql from "graphql-tag";
 import { useRouter, useRoute } from "vue-router";
 import { ref } from "vue";
 import { useCookie } from "#app";
-// GraphQL Mutations
-const LOGIN_MUTATION = gql`
-  mutation login($input: LoginInput!) {
-    login(input: $input) {
-      tokenType
-      expiresIn
-      accessToken
-      refreshToken
-    }
-  }
-`;
-
-const LOGOUT_MUTATION = gql`
-  mutation logout {
-    logout
-  }
-`;
-
-const REGISTER_MUTATION = gql`
-  mutation UserCreate($input: UserCreateInput!) {
-    userCreate(input: $input) {
-      id
-      name
-      email
-      __typename
-    }
-  }
-`;
+import { LOGIN_MUTATION, REGISTER_MUTATION, LOGOUT_MUTATION } from "../graphql/useMutationGraphql";
 
 export function useAuthUser() {
   const router = useRouter();
@@ -92,7 +64,7 @@ export function useAuthUser() {
       const { data } = await logoutMutation();
       if (data?.logout) {
         tokenCookie.value = null;
-        const redirect = route.path === "/profile" ? "/" : route.query.redirect;
+        const redirect = route.query.redirect || "/";
         await router.push(redirect);
       }
     } catch (err) {

@@ -3,8 +3,8 @@
 export default defineNuxtConfig({
   compatibilityDate: '2024-04-03',
   devtools: { enabled: true },
-  plugins: ['~/plugins/apollo.js'],
-  modules: ['@nuxtjs/apollo', '@nuxt/image'],
+  plugins: ['~/plugins/apollo.client.js'],
+  modules: ['@nuxt/image'],
   css: ['~/assets/css/main.css'],
   build: {
     transpile: ['@apollo/client', 'ts-invariant/process', '@heroicons/vue'],
@@ -21,25 +21,25 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
-  apollo: {
-    autoImports: true,
-    authHeader: 'Authorization',
-    authType: 'Bearer',
-    tokenStorage: 'cookie',
-    proxyCookies: true,
-    clients: {
-      default: {
-        httpEndpoint: 'http://shino-dev.local/graphql',
-        httpLinkOptions: {
-          credentials: 'include'
-        },
-        tokenName: 'apollo:crm.token',
-        tokenStorage: 'cookie',
-        authType: 'Bearer',
-        authHeader: 'Authorization'
-      },
-    }
-  },
+  // apollo: {
+  //   autoImports: true,
+  //   authHeader: 'Authorization',
+  //   authType: 'Bearer',
+  //   tokenStorage: 'cookie',
+  //   proxyCookies: true,
+  //   clients: {
+  //     default: {
+  //       httpEndpoint: 'http://shino-dev.local/graphql',
+  //       httpLinkOptions: {
+  //         credentials: 'include'
+  //       },
+  //       tokenName: 'apollo:crm.token',
+  //       tokenStorage: 'cookie',
+  //       authType: 'Bearer',
+  //       authHeader: 'Authorization'
+  //     },
+  //   }
+  // },
   app: {
     head: {
       charset: 'utf8',

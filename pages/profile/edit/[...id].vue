@@ -18,10 +18,10 @@
         <div class="flex items-center space-x-6 mb-6">
           <img :src="formData.avatar || '/none-user.png'" alt="Ảnh đại diện"
             class="w-20 h-20 rounded-full object-cover">
-          <!-- <label class="cursor-pointer bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+          <label class="cursor-pointer bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
             Tải ảnh lên
             <input type="file" class="hidden" accept="image/*" @change="handleAvatarChange">
-          </label> -->
+          </label>
         </div>
 
         <!-- Các Trường Form -->
@@ -82,16 +82,17 @@
 import { ref, watchEffect } from 'vue'
 import { useRouter } from 'vue-router'
 import { useQueryGraphql } from '@/composables/useQueryGraphql'
-import { useUserUpdate } from '@/composables/useMutation'
+import { useUserUpdate } from '@/composables/useMutationGraphql'
+import { useMutation } from '@vue/apollo-composable';
+import { UPLOAD_FILE_MUTATION } from '@/graphql/useMutationGraphql'
 
 const router = useRouter()
-
 // Fetch dữ liệu người dùng
 const { fetchUserProfile } = useQueryGraphql()
 const { userData, userLoading } = fetchUserProfile()
-
 // Mutation cập nhật
-const { userUpdate, loading, error } = useUserUpdate()
+const { userUpdate, loading } = useUserUpdate()
+const error = ref('')
 // const { uploadFile } = useFileUploader()
 const successMessage = ref('')
 
@@ -122,16 +123,24 @@ watchEffect(() => {
   }
 })
 
-// // Xử lý upload avatar
-// const handleAvatarChange = async (event) => {
-//   const file = event.target.files?.[0]; // Lấy file từ input
-//   if (file) {
-//     const uploadedUrl = await uploadFile(file);
-//     if (uploadedUrl) {
-//       formData.value.avatar = uploadedUrl; // Lưu URL của file upload
-//     }
-//   }
-// };
+// Sử dụng useMutation để gửi request
+const { mutate } = useMutation(UPLOAD_FILE_MUTATION);
+const handleAvatarChange = async (event: Event) => {
+  const target = event.target as HTMLInputElement;
+  if (target && target.files && target.files[0]) {
+    const file = target.files[0];
+    try {
+      const result = await mutate({
+        input: { image: file },
+      });
+      if (result && result.data) {
+        formData.value.avatar = result.data.fileImageUpload.url;
+      }
+    } catch (err) {
+      console.error("Error uploading file:", err);
+    }
+  }
+};
 
 // Xử lý submit form
 const handleSubmit = async () => {

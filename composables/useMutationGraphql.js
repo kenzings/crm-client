@@ -1,40 +1,7 @@
 import { useMutation } from "@vue/apollo-composable";
-import gql from "graphql-tag";
 import { useRouter, useRoute } from "vue-router";
 import { ref } from "vue";
-
-const USER_UPDATE_MUTATION = gql`
-  mutation userUpdate($input: UserUpdateInput!) {
-    userUpdate(input: $input) {
-      id
-      name
-      email
-      role {
-        id
-        name
-      }
-      permissions {
-        id
-        name
-      }
-      userProfile {
-        avatar
-        phone
-        address
-        city
-      }
-    }
-  }
-`;
-
-const FILE_IMAGE_UPLOAD_MUTATION = gql`
-mutation fileImageUpload($file: Upload!){
-  fileImageUpload(input: {image: $file}) {
-    url
-    originalFilename
-  }
-}
-`
+import { USER_UPDATE_MUTATION } from "../graphql/useMutationGraphql";
 
 export function useUserUpdate() {
   const router = useRouter();
@@ -55,7 +22,7 @@ export function useUserUpdate() {
     loading.value = false;
 
     if (data.value?.userUpdate) {
-      const redirect = route.query.redirect || "/";
+      const redirect = route.query.redirect || "/profile";
       router.push(redirect);
     }
   });
