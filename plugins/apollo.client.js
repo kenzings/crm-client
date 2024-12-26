@@ -18,7 +18,8 @@ export default defineNuxtPlugin(() => {
     return {
       headers: {
         ...headers,
-        Authorization: token ? `Bearer ${token}` : "",
+        "Apollo-Require-Preflight": "true",
+        Authorization: `Bearer ${token}`,
       },
     };
   });
