@@ -3,6 +3,10 @@
 export default defineNuxtConfig({
   compatibilityDate: '2024-04-03',
   devtools: { enabled: true },
+  routeRules: {
+    // prerender index route by default
+    '/': { prerender: true },
+  },
   plugins: ['~/plugins/apollo.client.js'],
   modules: ['@nuxt/image'],
   css: ['~/assets/css/main.css'],
@@ -51,8 +55,5 @@ export default defineNuxtConfig({
       ],
     },
   },
-  nitro: {
-    preset: 'vercel'
-  },
-  ssr: true,
+  ssr: false,
 });
