@@ -1,5 +1,4 @@
-# Deploy Nuxt site to GitHub Pages
-name: Deploy Nuxt site to Pages
+name: Deploy Nuxt site to GitHub Pages
 
 on:
   push:
@@ -60,16 +59,19 @@ jobs:
       - name: Install dependencies
         run: ${{ env.manager }} ${{ env.command }}
 
-      - name: Generate static site
-        run: ${{ env.manager }} run generate
+      - name: Build Nuxt app
+        run: ${{ env.manager }} run build
 
       - name: Debug build output
-        run: ls -la ./dist || echo "⚠️ dist directory does not exist!"
+        run: |
+          echo "Checking generated files..."
+          ls -la
+          ls -la .output/public || echo "⚠️ .output/public directory does not exist!"
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./dist
+          path: .output/public
 
   deploy:
     environment:
