@@ -52,7 +52,7 @@ export default defineNuxtConfig({
     },
   },
   nitro: {
-    preset: 'node-server'
+    preset: 'vercel'
   },
-  ssr: false,
+  ssr: true,
 });
