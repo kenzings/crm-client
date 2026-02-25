@@ -17,7 +17,7 @@
     "@vue/apollo-composable": "^4.2.1",
     "apollo-upload-client": "^18.0.1",
     "graphql": "^15.9.0",
-    "nuxt": "^3.16.0",
+    "nuxt": "^3.19.0",
     "vue": "latest"
   },
   "devDependencies": {
